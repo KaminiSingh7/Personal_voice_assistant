@@ -1,0 +1,63 @@
+#PERSONAL VOICE ASSISTANT NAME AS DARLING:
+import speech_recognition  as sr
+import pyttsx3 as pt
+import pywhatkit 
+import datetime 
+import wikipedia
+import openai
+import pyjokes 
+
+Kmn_listener= sr.Recognizer()
+engine= pt.init()
+voices= engine.getProperty('voices')
+engine.setProperty('rate',170)
+engine.setProperty('voice', voices[1].id)
+engine.say('Hey baby, I am your voice assistant and my name is Darling')
+def talk(text):
+    engine.say(text)
+    engine.runAndWait()
+def take_command():
+    try: 
+        with sr.Microphone() as source:
+            print("listening...")
+            voice= Kmn_listener.listen(source)
+            command = Kmn_listener.recognize_google(voice)
+            command= command.lower()
+            if "Darling" in command:
+                command = command.replace('darling'," ")
+                print(command) 
+
+    except:
+        pass
+    return command
+def run_darling():
+    command= take_command()
+    print(command)
+    if 'play' in command:
+        song= command.replace('play','')
+        talk("playing" + song)
+        pywhatkit.playonyt(song)
+    elif 'time' in command:
+        time = datetime.datetime.now().strftime("%H:%M")
+        talk('current time is '+time)
+        print(time)
+    elif 'wikipedia'in command:
+        person=command.replace("wiki","")
+        info=wikipedia.summary(person, 1)
+        talk(info)
+        print(info)
+    elif 'joke' in command:
+        talk(pyjokes.get_joke())
+        print(pyjokes.get_joke())
+    else:
+        talk('please say it again.')
+
+
+    '''elif 'ai' in command:
+        anything= command.replace("ai", "")
+        query=openai. (query, 1)
+        talk(query)
+        print(query)'''
+
+while True:
+    run_darling()
